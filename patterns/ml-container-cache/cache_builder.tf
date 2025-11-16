@@ -1,6 +1,6 @@
 module "ebs_snapshot_builder" {
   source  = "clowdhaus/ebs-snapshot-builder/aws"
-  version = "~> 1.1"
+  version = "~> 2.0"
 
   name = local.name
 
