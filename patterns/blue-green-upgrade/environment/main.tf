@@ -74,7 +74,7 @@ resource "aws_route53_record" "ns" {
 
 module "acm" {
   source  = "terraform-aws-modules/acm/aws"
-  version = "~> 4.0"
+  version = "~> 6.0"
 
   domain_name = "${local.name}.${local.hosted_zone_name}"
   zone_id     = aws_route53_zone.sub.zone_id
