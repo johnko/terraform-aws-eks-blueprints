@@ -57,7 +57,7 @@ set -x
 set +e
 $IAC_BIN init
 TF_INIT_EXIT_CODE=$?
-if [[ "0" != $TF_INIT_EXIT_CODE ]]; then
+if [[ "0" != "$TF_INIT_EXIT_CODE" ]]; then
   $IAC_BIN providers
   set -e
   exit $TF_INIT_EXIT_CODE
