@@ -5,16 +5,16 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 21.0"
 
-name                   = local.name
-  kubernetes_version                = "1.33"
-endpoint_public_access = true
+  name                   = local.name
+  kubernetes_version     = "1.33"
+  endpoint_public_access = true
 
   enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
-addons = {
+  addons = {
     coredns = {
       most_recent = true
     }
