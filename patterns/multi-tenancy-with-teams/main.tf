@@ -60,11 +60,11 @@ module "eks" {
     }
   }
 
-  manage_aws_auth_configmap = true
-  aws_auth_roles = flatten([
-    module.eks_blueprints_admin_team.aws_auth_configmap_role,
-    [for team in module.eks_blueprints_dev_teams : team.aws_auth_configmap_role],
-  ])
+  # manage_aws_auth_configmap = true
+  # aws_auth_roles = flatten([
+  #   module.eks_blueprints_admin_team.aws_auth_configmap_role,
+  #   [for team in module.eks_blueprints_dev_teams : team.aws_auth_configmap_role],
+  # ])
 
   tags = local.tags
 }
