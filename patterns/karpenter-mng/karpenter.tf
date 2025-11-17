@@ -10,9 +10,8 @@ module "karpenter" {
   source  = "terraform-aws-modules/eks/aws//modules/karpenter"
   version = "21.9.0"
 
-  cluster_name          = module.eks.cluster_name
-  enable_v1_permissions = true
-  namespace             = local.namespace
+  cluster_name = module.eks.cluster_name
+  namespace    = local.namespace
 
   # Name needs to match role name passed to the EC2NodeClass
   node_iam_role_use_name_prefix   = false
