@@ -67,10 +67,6 @@ module "eks" {
       # 3. Expose all of the available EFA interfaces on the launch template
       enable_efa_support = true
 
-      iam_role_additional_policies = {
-        AmazonEKSVPCResourceController = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
-      }
-
       labels = {
         "vpc.amazonaws.com/efa.present" = "true"
         "nvidia.com/gpu.present"        = "true"

@@ -80,10 +80,6 @@ module "eks" {
       max_size     = 5
       desired_size = 2
 
-      iam_role_additional_policies = {
-        AmazonEKSVPCResourceController = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
-      }
-
       labels = {
         "vpc.amazonaws.com/efa.present" = "true"
         "nvidia.com/gpu.present"        = "true"
