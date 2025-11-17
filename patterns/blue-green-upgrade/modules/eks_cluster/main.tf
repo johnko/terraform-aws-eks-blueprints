@@ -203,9 +203,9 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 21.9.0"
 
-  cluster_name                   = local.name
-  cluster_version                = local.cluster_version
-  cluster_endpoint_public_access = true
+name                   = local.name
+  kubernetes_version                = local.cluster_version
+endpoint_public_access = true
 
   vpc_id     = data.aws_vpc.vpc.id
   subnet_ids = data.aws_subnets.private.ids
