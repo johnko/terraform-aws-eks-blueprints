@@ -14,7 +14,7 @@ data "aws_ssm_parameter" "snapshot_id" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 21.0"
+  version = "~> 21.9.0"
 
   cluster_name    = local.name
   cluster_version = "1.32"

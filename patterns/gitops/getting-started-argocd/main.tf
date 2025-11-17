@@ -188,7 +188,7 @@ module "eks_blueprints_addons" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 21.0"
+  version = "~> 21.9.0"
 
   name                   = local.name
   kubernetes_version     = local.cluster_version
