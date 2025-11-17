@@ -70,26 +70,26 @@ module "eks" {
   subnet_ids = module.vpc.private_subnets
 
   # Fargate profiles use the cluster primary security group so these are not utilized
-  create_cluster_security_group = false
-  create_node_security_group    = false
+  create_security_group      = false
+  create_node_security_group = false
 
   fargate_profiles = {
     app_wildcard = {
       selectors = [
         { namespace = "app-*" }
       ]
+      iam_role_additional_policies = {
+        additional = module.eks_blueprints_addons.fargate_fluentbit.iam_policy[0].arn
+      }
     }
     kube_system = {
       name = "kube-system"
       selectors = [
         { namespace = "kube-system" }
       ]
-    }
-  }
-
-  fargate_profile_defaults = {
-    iam_role_additional_policies = {
-      additional = module.eks_blueprints_addons.fargate_fluentbit.iam_policy[0].arn
+      iam_role_additional_policies = {
+        additional = module.eks_blueprints_addons.fargate_fluentbit.iam_policy[0].arn
+      }
     }
   }
 
