@@ -201,7 +201,7 @@ data "aws_secretsmanager_secret_version" "admin_password_version" {
 #tfsec:ignore:aws-eks-enable-control-plane-logging
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 21.9.0"
+  version = "21.9.0"
 
   name                   = local.name
   kubernetes_version     = local.cluster_version
