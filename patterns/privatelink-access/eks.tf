@@ -18,10 +18,10 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 21.0"
 
-  cluster_name    = local.name
-  cluster_version = "1.30"
+  name               = local.name
+  kubernetes_version = "1.30"
 
-  cluster_endpoint_public_access           = false
+  endpoint_public_access                   = false
   enable_cluster_creator_admin_permissions = true
 
   access_entries = {
@@ -39,13 +39,13 @@ module "eks" {
     }
   }
 
-  cluster_addons = {
+  addons = {
     coredns    = {}
     kube-proxy = {}
     vpc-cni    = {}
   }
 
-  cluster_security_group_additional_rules = {
+  security_group_additional_rules = {
     # Allow tcp/443 from the NLB IP addresses
     for ip_addr in data.dns_a_record_set.nlb.addrs : "nlb_ingress_${replace(ip_addr, ".", "")}" => {
       description = "Allow ingress from NLB"
