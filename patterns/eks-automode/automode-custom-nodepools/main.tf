@@ -4,7 +4,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 5.34, < 6.0"
+      version = ">= 6.0"
     }
     helm = {
       source  = "hashicorp/helm"
@@ -63,7 +63,7 @@ locals {
   name   = basename(path.cwd)
   region = "us-east-1"
 
-  cluster_version = "1.31"
+  cluster_version = "1.33"
 
   vpc_cidr = "10.0.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 2)
@@ -81,15 +81,15 @@ locals {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.34"
+  version = "21.9.0"
 
-  cluster_name    = local.name
-  cluster_version = local.cluster_version
+  name               = local.name
+  kubernetes_version = local.cluster_version
 
   # if true, Your cluster API server is accessible from the internet. You can, optionally, limit the CIDR blocks that can access the public endpoint.
   #WARNING: Avoid using this option (cluster_endpoint_public_access = true) in preprod or prod accounts. This feature is designed for sandbox accounts, simplifying cluster deployment and testing.
   # Alternatively, create a bastion host in the same VPC as the cluster to access the cluster API server over a private connection
-  cluster_endpoint_public_access = true
+  endpoint_public_access = true
 
   vpc_id = module.vpc.vpc_id
 
@@ -98,7 +98,7 @@ module "eks" {
   enable_cluster_creator_admin_permissions = true
 
   # Enable EKS AutoMode
-  cluster_compute_config = {
+  compute_config = {
     enabled    = true
     node_pools = []
   }

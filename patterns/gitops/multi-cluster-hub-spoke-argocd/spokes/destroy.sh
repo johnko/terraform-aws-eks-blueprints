@@ -2,16 +2,18 @@
 
 set -uo pipefail
 
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ROOTDIR="$(cd ${SCRIPTDIR}/../..; pwd )"
-[[ -n "${DEBUG:-}" ]] && set -x
+SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOTDIR="$(
+  cd ${SCRIPTDIR}/../..
+  pwd
+)"
+[[ -n ${DEBUG:-} ]] && set -x
 
-
-if [[ $# -eq 0 ]] ; then
-    echo "No arguments supplied"
-    echo "Usage: destroy.sh <environment>"
-    echo "Example: destroy.sh dev"
-    exit 1
+if [[ $# -eq 0 ]]; then
+  echo "No arguments supplied"
+  echo "Usage: destroy.sh <environment>"
+  echo "Example: destroy.sh dev"
+  exit 1
 fi
 env=$1
 echo "Destroying $env ..."

@@ -41,11 +41,11 @@ locals {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.21"
+  version = "21.9.0"
 
-  cluster_name                   = local.name
-  cluster_version                = "1.29"
-  cluster_endpoint_public_access = true
+  name                   = local.name
+  kubernetes_version     = "1.33"
+  endpoint_public_access = true
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
@@ -60,11 +60,11 @@ module "eks" {
     }
   }
 
-  manage_aws_auth_configmap = true
-  aws_auth_roles = flatten([
-    module.eks_blueprints_admin_team.aws_auth_configmap_role,
-    [for team in module.eks_blueprints_dev_teams : team.aws_auth_configmap_role],
-  ])
+  # manage_aws_auth_configmap = true
+  # aws_auth_roles = flatten([
+  #   module.eks_blueprints_admin_team.aws_auth_configmap_role,
+  #   [for team in module.eks_blueprints_dev_teams : team.aws_auth_configmap_role],
+  # ])
 
   tags = local.tags
 }
