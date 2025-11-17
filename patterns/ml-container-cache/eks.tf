@@ -16,20 +16,20 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 21.9.0"
 
-  cluster_name    = local.name
-  cluster_version = "1.33"
+  name               = local.name
+  kubernetes_version = "1.33"
 
   # Give the Terraform identity admin access to the cluster
   # which will allow it to deploy resources into the cluster
   enable_cluster_creator_admin_permissions = true
-  cluster_endpoint_public_access           = true
+  endpoint_public_access                   = true
 
   # These will become the default in the next major version of the module
   bootstrap_self_managed_addons   = false
   enable_irsa                     = false
   enable_security_groups_for_pods = false
 
-  cluster_addons = {
+  addons = {
     coredns                   = {}
     eks-node-monitoring-agent = {}
     eks-pod-identity-agent = {
