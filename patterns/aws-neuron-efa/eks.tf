@@ -4,22 +4,20 @@
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.34"
+  version = "21.9.0"
 
-  cluster_name    = local.name
-  cluster_version = "1.32"
+  name               = local.name
+  kubernetes_version = "1.33"
 
   # Give the Terraform identity admin access to the cluster
   # which will allow it to deploy resources into the cluster
   enable_cluster_creator_admin_permissions = true
-  cluster_endpoint_public_access           = true
+  endpoint_public_access                   = true
 
   # These will become the default in the next major version of the module
-  bootstrap_self_managed_addons   = false
-  enable_irsa                     = false
-  enable_security_groups_for_pods = false
+  enable_irsa = false
 
-  cluster_addons = {
+  addons = {
     coredns                   = {}
     eks-node-monitoring-agent = {}
     eks-pod-identity-agent = {
@@ -32,18 +30,8 @@ module "eks" {
     }
   }
 
-  # Add security group rules on the node group security group to
-  # allow EFA traffic
-  enable_efa_support = true
-
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
-
-  eks_managed_node_group_defaults = {
-    node_repair_config = {
-      enabled = true
-    }
-  }
 
   eks_managed_node_groups = {
     neuron-efa = {
@@ -84,6 +72,12 @@ module "eks" {
         "aws.amazon.com/neuron.present" = "true"
       }
 
+      node_repair_config = {
+        enabled = true
+      }
+
+      subnet_ids = element(module.vpc.private_subnets, 0)
+
       taints = {
         # Ensure only Neuron workloads are scheduled on this node group
         gpu = {
@@ -101,6 +95,10 @@ module "eks" {
       min_size     = 1
       max_size     = 2
       desired_size = 2
+
+      node_repair_config = {
+        enabled = true
+      }
     }
   }
 
