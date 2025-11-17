@@ -32,7 +32,7 @@ module "eks" {
   version = "~> 21.0"
 
   cluster_name    = local.name
-  cluster_version = "1.30"
+  cluster_version = "1.33"
 
   # EKS Addons
   cluster_addons = {

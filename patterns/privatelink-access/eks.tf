@@ -19,7 +19,7 @@ module "eks" {
   version = "~> 21.0"
 
   name               = local.name
-  kubernetes_version = "1.30"
+  kubernetes_version = "1.33"
 
   endpoint_public_access                   = false
   enable_cluster_creator_admin_permissions = true
