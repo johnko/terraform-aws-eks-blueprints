@@ -25,9 +25,7 @@ module "eks" {
   endpoint_public_access                   = true
 
   # These will become the default in the next major version of the module
-  bootstrap_self_managed_addons   = false
-  enable_irsa                     = false
-  enable_security_groups_for_pods = false
+  enable_irsa = false
 
   addons = {
     coredns                   = {}
@@ -46,9 +44,6 @@ module "eks" {
   subnet_ids = module.vpc.private_subnets
 
   eks_managed_node_group_defaults = {
-    node_repair_config = {
-      enabled = true
-    }
   }
 
   eks_managed_node_groups = {
@@ -95,6 +90,10 @@ module "eks" {
         "ml-container-cache"     = "true"
       }
 
+      node_repair_config = {
+        enabled = true
+      }
+
       taints = {
         # Ensure only GPU workloads are scheduled on this node group
         gpu = {
@@ -123,6 +122,10 @@ module "eks" {
             volume_type = "gp3"
           }
         }
+      }
+
+      node_repair_config = {
+        enabled = true
       }
     }
   }
