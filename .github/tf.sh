@@ -54,7 +54,14 @@ if [[ "FMT" == "$SAFE_ACTION" ]]; then
 fi
 
 set -x
+set +e
 $IAC_BIN init
+TF_INIT_EXIT_CODE=$?
+if [[ "0" != $TF_INIT_EXIT_CODE ]]; then
+  $IAC_BIN providers
+  set -e
+  exit $TF_INIT_EXIT_CODE
+fi
 
 set +x
 if [[ "INIT" == "$SAFE_ACTION" ]]; then
