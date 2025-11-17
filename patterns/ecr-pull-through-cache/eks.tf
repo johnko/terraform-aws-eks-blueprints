@@ -6,15 +6,15 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 21.0"
 
-  cluster_name    = local.name
+  name            = local.name
   cluster_version = local.cluster_version
 
   # Give the Terraform identity admin access to the cluster
   # which will allow it to deploy resources into the cluster
   enable_cluster_creator_admin_permissions = true
-  cluster_endpoint_public_access           = true
+  endpoint_public_access                   = true
 
-  cluster_addons = {
+  addons = {
     aws-ebs-csi-driver = {
       most_recent              = true
       service_account_role_arn = module.ebs_csi_driver_irsa.iam_role_arn
