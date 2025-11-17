@@ -31,12 +31,12 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 21.0"
 
-  cluster_name                   = local.name
-  cluster_version                = "1.30"
-  cluster_endpoint_public_access = true
+  name                   = local.name
+  kubernetes_version     = "1.30"
+  endpoint_public_access = true
 
   # EKS Addons
-  cluster_addons = {
+  addons = {
     coredns    = {}
     kube-proxy = {}
     vpc-cni    = {}
@@ -45,7 +45,7 @@ module "eks" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
-  cluster_identity_providers = {
+  identity_providers = {
     okta = {
       name           = "Okta"
       issuer_url     = okta_auth_server.eks.issuer
