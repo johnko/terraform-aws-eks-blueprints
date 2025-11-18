@@ -8,7 +8,7 @@ terraform {
     }
     okta = {
       source  = "okta/okta"
-      version = "~> 4.1.0"
+      version = "~> 6.4.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
