@@ -252,11 +252,11 @@ module "eks_blueprints_addons" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.8.4"
+  version = "21.9.0"
 
-  cluster_name                   = local.name
-  cluster_version                = local.cluster_version
-  cluster_endpoint_public_access = true
+  name                   = local.name
+  kubernetes_version     = local.cluster_version
+  endpoint_public_access = true
 
 
   vpc_id     = module.vpc.vpc_id
@@ -294,7 +294,7 @@ module "eks" {
     }
   }
   # EKS Addons
-  cluster_addons = {
+  addons = {
     eks-pod-identity-agent = {
       most_recent = true
     }

@@ -201,11 +201,11 @@ data "aws_secretsmanager_secret_version" "admin_password_version" {
 #tfsec:ignore:aws-eks-enable-control-plane-logging
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.15.2"
+  version = "21.9.0"
 
-  cluster_name                   = local.name
-  cluster_version                = local.cluster_version
-  cluster_endpoint_public_access = true
+  name                   = local.name
+  kubernetes_version     = local.cluster_version
+  endpoint_public_access = true
 
   vpc_id     = data.aws_vpc.vpc.id
   subnet_ids = data.aws_subnets.private.ids
@@ -224,26 +224,26 @@ module "eks" {
     }
   }
 
-  manage_aws_auth_configmap = true
-  aws_auth_roles = concat(
-    [for team in module.eks_blueprints_dev_teams : team.aws_auth_configmap_role],
-    [
-      module.eks_blueprints_platform_teams.aws_auth_configmap_role,
-      {
-        rolearn  = module.eks_blueprints_addons.karpenter.node_iam_role_arn
-        username = "system:node:{{EC2PrivateDNSName}}"
-        groups = [
-          "system:bootstrappers",
-          "system:nodes",
-        ]
-      },
-      {
-        rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.eks_admin_role_name}" # The ARN of the IAM role
-        username = "ops-role"                                                                                      # The user name within Kubernetes to map to the IAM role
-        groups   = ["system:masters"]                                                                              # A list of groups within Kubernetes to which the role is mapped; Checkout K8s Role and Rolebindings
-      }
-    ]
-  )
+  # manage_aws_auth_configmap = true
+  # aws_auth_roles = concat(
+  #   [for team in module.eks_blueprints_dev_teams : team.aws_auth_configmap_role],
+  #   [
+  #     module.eks_blueprints_platform_teams.aws_auth_configmap_role,
+  #     {
+  #       rolearn  = module.eks_blueprints_addons.karpenter.node_iam_role_arn
+  #       username = "system:node:{{EC2PrivateDNSName}}"
+  #       groups = [
+  #         "system:bootstrappers",
+  #         "system:nodes",
+  #       ]
+  #     },
+  #     {
+  #       rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.eks_admin_role_name}" # The ARN of the IAM role
+  #       username = "ops-role"                                                                                      # The user name within Kubernetes to map to the IAM role
+  #       groups   = ["system:masters"]                                                                              # A list of groups within Kubernetes to which the role is mapped; Checkout K8s Role and Rolebindings
+  #     }
+  #   ]
+  # )
 
   tags = merge(local.tags, {
     # NOTE - if creating multiple security groups with this module, only tag the

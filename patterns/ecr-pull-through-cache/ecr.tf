@@ -9,7 +9,7 @@ module "secrets_manager" {
 
 module "ecr" {
   source  = "terraform-aws-modules/ecr/aws"
-  version = "~> 2.2"
+  version = "~> 3.0"
 
   create_repository = false
 

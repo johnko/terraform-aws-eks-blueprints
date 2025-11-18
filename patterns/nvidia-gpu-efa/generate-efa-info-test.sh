@@ -5,9 +5,9 @@ export IMAGE_URI=public.ecr.aws/hpc-cloud/nccl-tests:latest
 export NUM_WORKERS=2
 export GPU_PER_WORKER=8
 export EFA_PER_WORKER=32
-export TOTAL_GPUS=$((${NUM_WORKERS}*${GPU_PER_WORKER}))
+export TOTAL_GPUS=$((NUM_WORKERS * GPU_PER_WORKER))
 
-cat <<EOF >> efa-info-test.yaml
+cat <<EOF >>efa-info-test.yaml
 apiVersion: kubeflow.org/v2beta1
 kind: MPIJob
 metadata:

@@ -3,7 +3,7 @@
 set -x
 
 # Get the directory of the currently executing script (shell1.sh)
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 { "$SCRIPT_DIR/tear-down-applications.sh"; } || {
   echo "Error occurred while deleting application"
@@ -11,11 +11,13 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   # Ask the user if they want to continue
   read -p "Do you want to continue with cluster deletion (y/n)? " choice
   case "$choice" in
-    y|Y ) echo "Continuing with the rest of shell1.sh";;
-    * ) echo "Exiting.."; exit;;
+    y | Y) echo "Continuing with the rest of shell1.sh" ;;
+    *)
+      echo "Exiting.."
+      exit
+      ;;
   esac
 }
-
 
 #terraform destroy -target="module.eks_cluster.module.gitops_bridge_bootstrap" -auto-approve
 

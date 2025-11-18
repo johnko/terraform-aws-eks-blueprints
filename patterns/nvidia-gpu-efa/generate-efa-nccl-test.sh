@@ -6,7 +6,7 @@ export INSTANCE_TYPE=p5e.48xlarge
 export NUM_WORKERS=2
 export GPU_PER_WORKER=8
 export EFA_PER_WORKER=32
-export TOTAL_GPUS=$((${NUM_WORKERS}*${GPU_PER_WORKER}))
+export TOTAL_GPUS=$((NUM_WORKERS * GPU_PER_WORKER))
 
 export FI_PROVIDER=efa
 export FI_EFA_USE_DEVICE_RDMA=1
@@ -21,8 +21,7 @@ export MEMORY=32000Mi
 
 export DOLLAR='$'
 
-
-cat <<EOF >> efa-nccl-test.yaml
+cat <<EOF >>efa-nccl-test.yaml
 apiVersion: kubeflow.org/v2beta1
 kind: MPIJob
 metadata:

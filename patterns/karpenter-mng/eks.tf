@@ -4,17 +4,17 @@
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.24"
+  version = "21.9.0"
 
-  cluster_name    = local.name
-  cluster_version = "1.30"
+  name               = local.name
+  kubernetes_version = "1.33"
 
   # Give the Terraform identity admin access to the cluster
   # which will allow it to deploy resources into the cluster
   enable_cluster_creator_admin_permissions = true
-  cluster_endpoint_public_access           = true
+  endpoint_public_access                   = true
 
-  cluster_addons = {
+  addons = {
     coredns = {
       configuration_values = jsonencode({
         tolerations = [

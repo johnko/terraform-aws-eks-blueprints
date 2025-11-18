@@ -4,17 +4,17 @@
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.24"
+  version = "21.9.0"
 
-  cluster_name    = local.name
-  cluster_version = "1.30"
+  name               = local.name
+  kubernetes_version = "1.33"
 
   # Give the Terraform identity admin access to the cluster
   # which will allow it to deploy resources into the cluster
   enable_cluster_creator_admin_permissions = true
-  cluster_endpoint_public_access           = true
+  endpoint_public_access                   = true
 
-  cluster_addons = {
+  addons = {
     # Enable after creation to run on Karpenter managed nodes
     # coredns                = {}
     eks-pod-identity-agent = {}
@@ -27,8 +27,8 @@ module "eks" {
 
   # Fargate profiles use the cluster primary security group
   # Therefore these are not used and can be skipped
-  create_cluster_security_group = false
-  create_node_security_group    = false
+  create_security_group      = false
+  create_node_security_group = false
 
   fargate_profiles = {
     karpenter = {

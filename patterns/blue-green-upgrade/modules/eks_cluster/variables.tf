@@ -99,7 +99,7 @@ variable "service_name" {
 variable "cluster_version" {
   description = "The Version of Kubernetes to deploy"
   type        = string
-  default     = "1.25"
+  default     = "1.32"
 }
 
 variable "argocd_route53_weight" {
