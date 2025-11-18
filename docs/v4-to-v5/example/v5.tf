@@ -19,7 +19,7 @@ module "eks" {
   version = "~> 19.13"
 
   cluster_name                   = local.name
-  cluster_version                = "1.27"
+  cluster_version                = "1.33"
   cluster_endpoint_public_access = true
   cluster_enabled_log_types      = ["api", "audit", "authenticator", "controllerManager", "scheduler"] # Backwards compat
 

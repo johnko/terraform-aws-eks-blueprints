@@ -239,7 +239,7 @@ module "delete_eni_lambda" {
 
 module "eventbridge" {
   source  = "terraform-aws-modules/eventbridge/aws"
-  version = "~> 2.0"
+  version = "~> 4.0"
 
   # Use the existing default event bus
   create_bus = false
