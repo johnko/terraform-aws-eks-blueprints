@@ -380,7 +380,7 @@ module "velero_backup_s3_bucket" {
 
 module "efs" {
   source  = "terraform-aws-modules/efs/aws"
-  version = "~> 1.1"
+  version = "~> 2.0"
 
   creation_token = local.name
   name           = local.name
