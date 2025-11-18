@@ -14,22 +14,20 @@ data "aws_ssm_parameter" "snapshot_id" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.34"
+  version = "21.9.0"
 
-  cluster_name    = local.name
-  cluster_version = "1.32"
+  name               = local.name
+  kubernetes_version = "1.33"
 
   # Give the Terraform identity admin access to the cluster
   # which will allow it to deploy resources into the cluster
   enable_cluster_creator_admin_permissions = true
-  cluster_endpoint_public_access           = true
+  endpoint_public_access                   = true
 
   # These will become the default in the next major version of the module
-  bootstrap_self_managed_addons   = false
-  enable_irsa                     = false
-  enable_security_groups_for_pods = false
+  enable_irsa = false
 
-  cluster_addons = {
+  addons = {
     coredns                   = {}
     eks-node-monitoring-agent = {}
     eks-pod-identity-agent = {
@@ -44,12 +42,6 @@ module "eks" {
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
-
-  eks_managed_node_group_defaults = {
-    node_repair_config = {
-      enabled = true
-    }
-  }
 
   eks_managed_node_groups = {
     gpu = {
@@ -95,6 +87,10 @@ module "eks" {
         "ml-container-cache"     = "true"
       }
 
+      node_repair_config = {
+        enabled = true
+      }
+
       taints = {
         # Ensure only GPU workloads are scheduled on this node group
         gpu = {
@@ -123,6 +119,10 @@ module "eks" {
             volume_type = "gp3"
           }
         }
+      }
+
+      node_repair_config = {
+        enabled = true
       }
     }
   }

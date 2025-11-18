@@ -41,14 +41,14 @@ locals {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.11"
+  version = "21.9.0"
 
-  cluster_name                   = local.name
-  cluster_version                = "1.30"
-  cluster_endpoint_public_access = true
+  name                   = local.name
+  kubernetes_version     = "1.33"
+  endpoint_public_access = true
 
   # EKS Addons
-  cluster_addons = {
+  addons = {
     coredns    = {}
     kube-proxy = {}
     vpc-cni    = {}

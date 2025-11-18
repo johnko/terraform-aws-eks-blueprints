@@ -8,11 +8,10 @@ locals {
 
 module "karpenter" {
   source  = "terraform-aws-modules/eks/aws//modules/karpenter"
-  version = "~> 20.24"
+  version = "21.9.0"
 
-  cluster_name          = module.eks.cluster_name
-  enable_v1_permissions = true
-  namespace             = local.namespace
+  cluster_name = module.eks.cluster_name
+  namespace    = local.namespace
 
   # Name needs to match role name passed to the EC2NodeClass
   node_iam_role_use_name_prefix = false
@@ -20,8 +19,6 @@ module "karpenter" {
 
   # EKS Fargate does not support pod identity
   create_pod_identity_association = false
-  enable_irsa                     = true
-  irsa_oidc_provider_arn          = module.eks.oidc_provider_arn
 
   tags = local.tags
 }
@@ -38,7 +35,7 @@ resource "helm_release" "karpenter" {
   repository_username = data.aws_ecrpublic_authorization_token.token.user_name
   repository_password = data.aws_ecrpublic_authorization_token.token.password
   chart               = "karpenter"
-  version             = "1.0.2"
+  version             = "1.0.12"
   wait                = false
 
   values = [
