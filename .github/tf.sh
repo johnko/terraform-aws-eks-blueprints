@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+if [[ -e .envrc ]]; then
+  set +x
+  # hide secret env values from output
+  # shellcheck disable=SC1091
+  source .envrc
+fi
+
 if [[ -z $IAC_BIN ]]; then
+  set -x
   export IAC_BIN=terraform
+  set +x
 fi
 
 WORKSPACE="$1"
@@ -29,7 +38,6 @@ case $SAFE_ACTION in
     echo "ACTION=$ACTION"
     ;;
   *)
-    set +x
     echo "ERROR: invalid 'ACTION', received '$ACTION'"
     exit 1
     ;;
@@ -46,21 +54,26 @@ if [[ "FMT" == "$SAFE_ACTION" ]]; then
 fi
 
 set -x
+set +e
 $IAC_BIN init
-
+TF_INIT_EXIT_CODE=$?
 set +x
-if [[ "INIT" == "$SAFE_ACTION" ]]; then
+if [[ "INIT" == "$SAFE_ACTION" || "0" != "$TF_INIT_EXIT_CODE" ]]; then
   set -x
-  exit 0
+  $IAC_BIN providers
+  set -e
+  exit $TF_INIT_EXIT_CODE
 fi
 
 set -x
+set +e
 $IAC_BIN validate
-
+TF_VALIDATE_EXIT_CODE=$?
 set +x
-if [[ "VALIDATE" == "$SAFE_ACTION" ]]; then
+if [[ "VALIDATE" == "$SAFE_ACTION" || "0" != "$TF_VALIDATE_EXIT_CODE" ]]; then
   set -x
-  exit 0
+  set -e
+  exit $TF_VALIDATE_EXIT_CODE
 fi
 
 set +x
