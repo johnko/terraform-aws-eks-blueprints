@@ -138,7 +138,7 @@ resource "aws_route53_record" "client" {
 
 module "create_eni_lambda" {
   source  = "terraform-aws-modules/lambda/aws"
-  version = "~> 5.0"
+  version = "~> 8.0"
 
   function_name = "${local.name}-add-eni-ips"
   description   = "Add ENI IPs to NLB target group when EKS API endpoint is created"
@@ -183,7 +183,7 @@ module "create_eni_lambda" {
 
 module "delete_eni_lambda" {
   source  = "terraform-aws-modules/lambda/aws"
-  version = "~> 5.0"
+  version = "~> 8.0"
 
   function_name = "${local.name}-delete-eni-ips"
   description   = "Deletes ENI IPs from NLB target group when EKS API endpoint is deleted"
