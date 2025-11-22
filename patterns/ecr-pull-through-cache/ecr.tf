@@ -1,6 +1,6 @@
 module "secrets_manager" {
   source  = "terraform-aws-modules/secrets-manager/aws"
-  version = "~> 1.1"
+  version = "~> 2.0"
 
   name                    = "ecr-pullthroughcache/docker"
   secret_string           = jsonencode(var.docker_secret)
