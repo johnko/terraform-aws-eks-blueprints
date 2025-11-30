@@ -275,7 +275,7 @@ resource "kubernetes_network_policy_v1" "allow_client_to_backend" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   name = local.name
   cidr = local.vpc_cidr
