@@ -166,7 +166,7 @@ resource "aws_iam_role_policy_attachment" "ecr_pull_policy" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.19"
+  version = "~> 6.0"
 
   name = local.name
   cidr = local.vpc_cidr
