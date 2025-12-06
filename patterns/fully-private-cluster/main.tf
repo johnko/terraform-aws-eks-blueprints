@@ -29,7 +29,7 @@ locals {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "21.9.0"
+  version = "21.10.1"
 
   name               = local.name
   kubernetes_version = "1.33"
