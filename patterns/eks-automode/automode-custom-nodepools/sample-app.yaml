@@ -5,45 +5,46 @@ kind: StatefulSet
 metadata:
   name: httpd
 spec:
-  serviceName: httpd-service
   replicas: 2
   selector:
     matchLabels:
       app: httpd
+  serviceName: httpd-service
   template:
     metadata:
       labels:
         app: httpd
     spec:
-      tolerations:
-        - key: amd64
-          operator: "Exists"
-      nodeSelector:
-        NodeGroupType: amd64
       containers:
-        - name: httpd
-          image: httpd:2.4
+        - image: httpd:2.4
+          name: httpd
           ports:
             - containerPort: 80
               name: http
-          volumeMounts:
-            - name: httpd-logs
-              mountPath: /usr/local/apache2/logs
           resources:
-            requests:
-              memory: "128Mi"
-              cpu: "100m"
             limits:
-              memory: "256Mi"
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          volumeMounts:
+            - mountPath: /usr/local/apache2/logs
+              name: httpd-logs
+      nodeSelector:
+        NodeGroupType: amd64
+      tolerations:
+        - key: amd64
+          operator: Exists
   volumeClaimTemplates:
     - metadata:
         name: httpd-logs
       spec:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: auto-ebs-sc
+        accessModes:
+          - ReadWriteOnce
         resources:
           requests:
             storage: 10Gi
+        storageClassName: auto-ebs-sc
 ---
 # Service
 apiVersion: v1
@@ -51,13 +52,13 @@ kind: Service
 metadata:
   name: httpd-service
 spec:
-  type: ClusterIP
   ports:
     - port: 80
-      targetPort: 80
       protocol: TCP
+      targetPort: 80
   selector:
     app: httpd
+  type: ClusterIP
 ---
 # Ingress
 apiVersion: networking.k8s.io/v1
@@ -69,10 +70,10 @@ spec:
   rules:
     - http:
         paths:
-          - path: /
-            pathType: Prefix
-            backend:
+          - backend:
               service:
                 name: httpd-service
                 port:
                   number: 80
+            path: /
+            pathType: Prefix

@@ -1,6 +1,6 @@
-dictionaryDefinitions:
-  - name: bpWords
-    path: ./docs/cSpell_dict.txt
-    addWords: true
 dictionaries:
   - bpWords
+dictionaryDefinitions:
+  - addWords: true
+    name: bpWords
+    path: ./docs/cSpell_dict.txt

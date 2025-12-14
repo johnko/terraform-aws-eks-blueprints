@@ -4,9 +4,9 @@ metadata:
   name: management-ui
   namespace: management-ui
 spec:
-  type: LoadBalancer
   ports:
     - port: 80
       targetPort: 9001
   selector:
     role: management-ui
+  type: LoadBalancer

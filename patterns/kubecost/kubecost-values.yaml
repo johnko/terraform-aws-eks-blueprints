@@ -1,32 +1,28 @@
-kubecostToken: ${kubecostToken}
-
 global:
   grafana:
     enabled: false
     proxy: false
-
-serviceAccount:
-  create: true
-  name: ${service-account}
-  annotations:
-    eks.amazonaws.com/role-arn: ${iam-role-arn}
-
-service:
-  type: LoadBalancer
-  port: 9090
-  targetPort: 9090
-  labels: {}
-  annotations: {}
-  sessionAffinity:
-    enabled: false # Makes sure that connections from a client are passed to the same Pod each time, when set to `true`. You should set it when you enabled authentication through OIDC or SAML integration.
-    timeoutSeconds: 10800
-
 kubecostProductConfigs:
+  athenaBucketName: ${athenaBucketName}
+  athenaDatabase: ${athenaDatabase}
+  athenaProjectID: ${athenaProjectID}
+  athenaRegion: ${athenaRegion}
+  athenaTable: ${athenaTable}
   projectID: ${projectID}
   spotLabel: eks.amazonaws.com/capacityType
   spotLabelValue: SPOT
-  athenaProjectID: ${athenaProjectID}
-  athenaBucketName: ${athenaBucketName}
-  athenaRegion: ${athenaRegion}
-  athenaDatabase: ${athenaDatabase}
-  athenaTable: ${athenaTable}
+kubecostToken: ${kubecostToken}
+service:
+  annotations: {}
+  labels: {}
+  port: 9090
+  sessionAffinity:
+    enabled: false # Makes sure that connections from a client are passed to the same Pod each time, when set to `true`. You should set it when you enabled authentication through OIDC or SAML integration.
+    timeoutSeconds: 10800
+  targetPort: 9090
+  type: LoadBalancer
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: ${iam-role-arn}
+  create: true
+  name: ${service-account}

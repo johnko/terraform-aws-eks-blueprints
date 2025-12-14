@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: server
   labels:
     app: server
+  name: server
 spec:
   replicas: 2
   selector:
@@ -15,8 +15,8 @@ spec:
         app: server
     spec:
       containers:
-        - name: server
-          image: public.ecr.aws/x2j8p8w7/http-server:latest
-          env:
+        - env:
             - name: PodName
-              value: "server pod"
+              value: server pod
+          image: public.ecr.aws/x2j8p8w7/http-server:latest
+          name: server

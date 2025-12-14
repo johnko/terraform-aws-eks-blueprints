@@ -19,108 +19,108 @@ kind: LeaderWorkerSet
 metadata:
   name: vllm
 spec:
-  replicas: 1
   leaderWorkerTemplate:
-    size: 4
-    restartPolicy: RecreateGroupOnPodRestart
     leaderTemplate:
       metadata:
         labels:
           role: leader
       spec:
         containers:
-          - name: vllm-leader
-            image: <image-built-from-dockerfile>
-            imagePullPolicy: Always
+          - command:
+              - sh
+              - -c
+              - /vllm-workspace/ray_init.sh leader --ray_cluster_size=$(LWS_GROUP_SIZE); python3 -m vllm.entrypoints.openai.api_server --port 8080 --model meta-llama/Llama-3.3-70B-Instruct --max-model-len 1024 --tensor-parallel-size 1 --pipeline-parallel-size 4
             env:
               - name: FI_PROVIDER
                 value: efa
               - name: HUGGING_FACE_HUB_TOKEN
                 value: <your-hf-token>
               - name: HF_HUB_ENABLE_HF_TRANSFER
-                value: '1'
+                value: "1"
               - name: NCCL_DEBUG
                 value: INFO
               - name: NCCL_NET_GDR_LEVEL
-                value: '0'
+                value: "0"
               - name: NCCL_NVLS_ENABLE
-                value: '0'
+                value: "0"
               - name: NCCL_SHM_USE_CUDA_MEMCPY
-                value: '1'
-            command:
-              - sh
-              - -c
-              - '/vllm-workspace/ray_init.sh leader --ray_cluster_size=$(LWS_GROUP_SIZE); python3 -m vllm.entrypoints.openai.api_server --port 8080 --model meta-llama/Llama-3.3-70B-Instruct --max-model-len 1024 --tensor-parallel-size 1 --pipeline-parallel-size 4'
-            resources:
-              limits:
-                nvidia.com/gpu: '1'
-                vpc.amazonaws.com/efa: '1'
-                ephemeral-storage: 160Gi
-              requests:
-                nvidia.com/gpu: '1'
-                vpc.amazonaws.com/efa: '1'
-                ephemeral-storage: 160Gi
+                value: "1"
+            image: <image-built-from-dockerfile>
+            imagePullPolicy: Always
+            name: vllm-leader
             ports:
               - containerPort: 8080
             readinessProbe:
-              tcpSocket:
-                port: 8080
               initialDelaySeconds: 15
               periodSeconds: 10
+              tcpSocket:
+                port: 8080
+            resources:
+              limits:
+                ephemeral-storage: 160Gi
+                nvidia.com/gpu: "1"
+                vpc.amazonaws.com/efa: "1"
+              requests:
+                ephemeral-storage: 160Gi
+                nvidia.com/gpu: "1"
+                vpc.amazonaws.com/efa: "1"
             volumeMounts:
               - mountPath: /dev/shm
                 name: dshm
         tolerations:
-          - key: nvidia.com/gpu
+          - effect: NoSchedule
+            key: nvidia.com/gpu
             operator: Exists
-            effect: NoSchedule
         volumes:
-          - name: dshm
-            emptyDir:
+          - emptyDir:
               medium: Memory
               sizeLimit: 15Gi
+            name: dshm
+    restartPolicy: RecreateGroupOnPodRestart
+    size: 4
     workerTemplate:
       spec:
         containers:
-          - name: vllm-worker
-            image: <image-built-from-dockerfile>
-            imagePullPolicy: Always
-            command:
+          - command:
               - sh
               - -c
-              - '/vllm-workspace/ray_init.sh worker --ray_address=$(LWS_LEADER_ADDRESS)'
-            resources:
-              limits:
-                nvidia.com/gpu: '1'
-                vpc.amazonaws.com/efa: '1'
-                ephemeral-storage: 160Gi
-              requests:
-                nvidia.com/gpu: '1'
-                vpc.amazonaws.com/efa: '1'
-                ephemeral-storage: 160Gi
+              - /vllm-workspace/ray_init.sh worker --ray_address=$(LWS_LEADER_ADDRESS)
             env:
               - name: FI_PROVIDER
                 value: efa
               - name: HUGGING_FACE_HUB_TOKEN
                 value: <your-hf-token>
               - name: HF_HUB_ENABLE_HF_TRANSFER
-                value: '1'
+                value: "1"
               - name: NCCL_DEBUG
                 value: INFO
               - name: NCCL_NET_GDR_LEVEL
-                value: '0'
+                value: "0"
               - name: NCCL_NVLS_ENABLE
-                value: '0'
+                value: "0"
               - name: NCCL_SHM_USE_CUDA_MEMCPY
-                value: '1'
+                value: "1"
+            image: <image-built-from-dockerfile>
+            imagePullPolicy: Always
+            name: vllm-worker
+            resources:
+              limits:
+                ephemeral-storage: 160Gi
+                nvidia.com/gpu: "1"
+                vpc.amazonaws.com/efa: "1"
+              requests:
+                ephemeral-storage: 160Gi
+                nvidia.com/gpu: "1"
+                vpc.amazonaws.com/efa: "1"
             volumeMounts:
               - mountPath: /dev/shm
                 name: dshm
         tolerations:
-          - key: nvidia.com/gpu
+          - effect: NoSchedule
+            key: nvidia.com/gpu
             operator: Exists
-            effect: NoSchedule
         volumes:
-          - name: dshm
-            emptyDir:
+          - emptyDir:
               medium: Memory
+            name: dshm
+  replicas: 1

@@ -1,6 +1,7 @@
-nodepool:
-  zone: []
 ec2nodeclass:
+  blockDeviceMappings:
+    ebs:
+      kmsKeyID: ""
   role: ""
   securityGroupSelectorTerms:
     tags:
@@ -8,8 +9,7 @@ ec2nodeclass:
   subnetSelectorTerms:
     tags:
       karpenter.sh/discovery: ""
-  blockDeviceMappings:
-    ebs:
-      kmsKeyID: ""
   tags:
     karpenter.sh/discovery: ""
+nodepool:
+  zone: []

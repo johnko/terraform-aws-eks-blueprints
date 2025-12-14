@@ -1,4 +1,4 @@
-apiVersion: "agones.dev/v1"
+apiVersion: agones.dev/v1
 kind: Fleet
 metadata:
   name: simple-game-server
@@ -7,17 +7,17 @@ spec:
   template:
     spec:
       ports:
-        - name: default
-          containerPort: 7654
+        - containerPort: 7654
+          name: default
       template:
         spec:
           containers:
-            - name: simple-game-server
-              image: gcr.io/agones-images/simple-game-server:0.3
+            - image: gcr.io/agones-images/simple-game-server:0.3
+              name: simple-game-server
               resources:
-                requests:
-                  memory: "64Mi"
-                  cpu: "20m"
                 limits:
-                  memory: "64Mi"
-                  cpu: "20m"
+                  cpu: 20m
+                  memory: 64Mi
+                requests:
+                  cpu: 20m
+                  memory: 64Mi

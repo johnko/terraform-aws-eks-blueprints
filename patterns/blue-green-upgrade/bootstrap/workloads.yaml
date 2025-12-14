@@ -4,9 +4,6 @@ metadata:
   name: bootstrap-workloads
   namespace: argocd
 spec:
-  goTemplate: true
-  syncPolicy:
-    preserveResourcesOnDeletion: true
   generators:
     - matrix:
         generators:
@@ -18,23 +15,24 @@ spec:
                     values:
                       - in-cluster
           - git:
-              repoURL: '{{.metadata.annotations.gitops_workloads_url}}'
-              revision: '{{.metadata.annotations.gitops_workloads_revision}}'
               directories:
                 - path: '{{.metadata.annotations.gitops_workloads_path}}/*'
+              repoURL: '{{.metadata.annotations.gitops_workloads_url}}'
+              revision: '{{.metadata.annotations.gitops_workloads_revision}}'
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: true
   template:
     metadata:
-      name: 'bootstrap-workloads-{{.name}}'
+      name: bootstrap-workloads-{{.name}}
     spec:
+      destination:
+        name: '{{.name}}'
       project: default
       sources:
-        - repoURL: '{{.metadata.annotations.gitops_workloads_url}}'
-          targetRevision: '{{.metadata.annotations.gitops_workloads_revision}}'
-          ref: values
-          path: '{{.metadata.annotations.gitops_workloads_path}}'
-          helm:
-            releaseName: 'bootstrap-workloads-{{.name}}'
+        - helm:
             ignoreMissingValueFiles: true
+            releaseName: bootstrap-workloads-{{.name}}
             values: |
               "account": "{{.metadata.annotations.aws_account_id}}"
               "clusterName": "{{.metadata.annotations.cluster_name}}"
@@ -58,8 +56,10 @@ spec:
                 "karpenterInstanceProfile": "{{.metadata.annotations.karpenter_node_instance_profile_name}}"
                 "target_group_arn": {{ default "" .metadata.annotations.target_group_arn }}
                 "external_lb_url": {{ if index .metadata.annotations "external_lb_dns" }} http://{{ .metadata.annotations.external_lb_dns }}{{ else }}{{ end }}
-      destination:
-        name: '{{.name}}'
+          path: '{{.metadata.annotations.gitops_workloads_path}}'
+          ref: values
+          repoURL: '{{.metadata.annotations.gitops_workloads_url}}'
+          targetRevision: '{{.metadata.annotations.gitops_workloads_revision}}'
       syncPolicy:
         automated: {}
         syncOptions:

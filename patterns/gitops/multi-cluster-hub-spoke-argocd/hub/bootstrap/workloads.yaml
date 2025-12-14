@@ -4,27 +4,28 @@ metadata:
   name: workloads
   namespace: argocd
 spec:
-  syncPolicy:
-    preserveResourcesOnDeletion: false
   generators:
     - clusters:
         selector:
           matchExpressions:
             - key: environment
               operator: NotIn
-              values: [control-plane]
+              values:
+                - control-plane
+  syncPolicy:
+    preserveResourcesOnDeletion: false
   template:
     metadata:
-      name: 'workload-{{metadata.labels.environment}}'
+      name: workload-{{metadata.labels.environment}}
     spec:
+      destination:
+        name: '{{name}}'
+        namespace: workload
       project: default
       source:
-        repoURL: '{{metadata.annotations.workload_repo_url}}'
         path: '{{metadata.annotations.workload_repo_basepath}}{{metadata.annotations.workload_repo_path}}'
+        repoURL: '{{metadata.annotations.workload_repo_url}}'
         targetRevision: '{{metadata.annotations.workload_repo_revision}}'
-      destination:
-        namespace: 'workload'
-        name: '{{name}}'
       syncPolicy:
         automated: {}
         syncOptions:

@@ -3,9 +3,9 @@ kind: Service
 metadata:
   name: server
 spec:
+  ports:
+    - port: 8090
+      protocol: TCP
+      targetPort: 8090
   selector:
     app: server
-  ports:
-    - protocol: TCP
-      port: 8090
-      targetPort: 8090

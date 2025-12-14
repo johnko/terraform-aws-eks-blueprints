@@ -3,18 +3,18 @@ kind: NodeClass
 metadata:
   name: basic
 spec:
+  ephemeralStorage:
+    iops: 3000 # Range: 3000-16000
+    size: 80Gi # Range: 1-9000Gi or 1-64000G or 1-58Ti or 1-64T
+    throughput: 125 # Range: 125-1000
   # Use role name here
-  role: "${node_iam_role_name}"
-  subnetSelectorTerms:
-    - tags:
-        Name: "${cluster_name}-private*"
+  role: ${node_iam_role_name}
   securityGroupSelectorTerms:
     - tags:
-        Name: "${cluster_name}-node"
-  ephemeralStorage:
-    size: "80Gi"    # Range: 1-9000Gi or 1-64000G or 1-58Ti or 1-64T
-    iops: 3000      # Range: 3000-16000
-    throughput: 125 # Range: 125-1000
+        Name: ${cluster_name}-node
+  subnetSelectorTerms:
+    - tags:
+        Name: ${cluster_name}-private*
   tags:
-    Environment: "production"
-    Team: "platform"
+    Environment: production
+    Team: platform

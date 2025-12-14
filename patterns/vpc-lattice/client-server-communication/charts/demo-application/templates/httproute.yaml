@@ -11,8 +11,8 @@ spec:
       sectionName: http
   rules:
     - backendRefs:
-        - name: server
-          kind: Service
+        - kind: Service
+          name: server
           port: 8090
       matches:
         - path:

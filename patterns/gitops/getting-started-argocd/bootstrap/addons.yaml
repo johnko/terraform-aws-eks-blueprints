@@ -4,23 +4,23 @@ metadata:
   name: cluster-addons
   namespace: argocd
 spec:
-  syncPolicy:
-    preserveResourcesOnDeletion: true
   generators:
     - clusters: {}
+  syncPolicy:
+    preserveResourcesOnDeletion: true
   template:
     metadata:
       name: cluster-addons
     spec:
+      destination:
+        name: '{{name}}'
+        namespace: argocd
       project: default
       source:
-        repoURL: '{{metadata.annotations.addons_repo_url}}'
-        path: '{{metadata.annotations.addons_repo_basepath}}{{metadata.annotations.addons_repo_path}}'
-        targetRevision: '{{metadata.annotations.addons_repo_revision}}'
         directory:
           recurse: true
-      destination:
-        namespace: argocd
-        name: '{{name}}'
+        path: '{{metadata.annotations.addons_repo_basepath}}{{metadata.annotations.addons_repo_path}}'
+        repoURL: '{{metadata.annotations.addons_repo_url}}'
+        targetRevision: '{{metadata.annotations.addons_repo_revision}}'
       syncPolicy:
         automated: {}

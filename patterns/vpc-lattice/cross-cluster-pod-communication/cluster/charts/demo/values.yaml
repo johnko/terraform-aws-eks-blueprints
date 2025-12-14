@@ -1,11 +1,7 @@
-awsAccountID: to-replace
-region: to-replace
-
 #Allow source to connexct to app
 allowedCluster:
 allowedNamespace:
-
-
+awsAccountID: to-replace
 certificateArn: to-replace
-
 customDomain: to-replace
+region: to-replace

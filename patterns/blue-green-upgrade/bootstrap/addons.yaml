@@ -4,29 +4,30 @@ metadata:
   name: bootstrap-addons
   namespace: argocd
 spec:
-  syncPolicy:
-    preserveResourcesOnDeletion: true
   generators:
     - clusters:
         selector:
           matchExpressions:
             - key: akuity.io/argo-cd-cluster-name
               operator: NotIn
-              values: [in-cluster]
+              values:
+                - in-cluster
+  syncPolicy:
+    preserveResourcesOnDeletion: true
   template:
     metadata:
-      name: 'bootstrap-addons'
+      name: bootstrap-addons
     spec:
+      destination:
+        name: '{{name}}'
+        namespace: argocd
       project: default
       source:
-        repoURL: '{{metadata.annotations.addons_repo_url}}'
-        path: '{{metadata.annotations.addons_repo_path}}'
-        targetRevision: '{{metadata.annotations.addons_repo_revision}}'
         directory:
-          recurse: true
           exclude: exclude/*
-      destination:
-        namespace: 'argocd'
-        name: '{{name}}'
+          recurse: true
+        path: '{{metadata.annotations.addons_repo_path}}'
+        repoURL: '{{metadata.annotations.addons_repo_url}}'
+        targetRevision: '{{metadata.annotations.addons_repo_revision}}'
       syncPolicy:
         automated: {}
