@@ -17,7 +17,7 @@ spec:
         encrypted: true
         kmsKeyID: '{{ .Values.ec2nodeclass.blockDeviceMappings.ebs.kmsKeyID }}'
         volumeSize: 20Gi
-  role: {{- toYaml .Values.ec2nodeclass.role | nindent 4 }}
+  role: #{{- toYaml .Values.ec2nodeclass.role | nindent 4 }}
   securityGroupSelectorTerms:
     - tags:
         karpenter.sh/discovery: '{{ .Values.ec2nodeclass.securityGroupSelectorTerms.tags }}'
