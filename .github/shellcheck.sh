@@ -31,4 +31,8 @@ shellcheck --version
 
 set +e
 
-find . -type f \( -name '*.sh' -o -name '*.envrc' \) -print0 | xargs -0 --max-procs=2 --verbose -I{} shellcheck --check-sourced --external-sources {}
+find . -type f \( -name '*.sh' -o -name '*.envrc' \) \
+  \
+  -a -not -path '*/.terraform/modules/*' \
+  \
+  -print0 | xargs -0 --max-procs=2 --verbose -I{} shellcheck --check-sourced --external-sources {}

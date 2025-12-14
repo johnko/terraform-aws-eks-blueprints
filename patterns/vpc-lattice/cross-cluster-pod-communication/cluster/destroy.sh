@@ -17,15 +17,15 @@ cleanup_vpc_resources() {
   local WORKSPACE=$1
 
   VPCID=$(aws ec2 describe-vpcs --filters "Name=tag:Name,Values=eks-$WORKSPACE" --query "Vpcs[*].VpcId" --output text)
-  echo $VPCID
+  echo "$VPCID"
   for endpoint in $(aws ec2 describe-vpc-endpoints --filters "Name=vpc-id,Values=$VPCID" --query "VpcEndpoints[*].VpcEndpointId" --output text); do
-    aws ec2 delete-vpc-endpoints --vpc-endpoint-ids $endpoint
+    aws ec2 delete-vpc-endpoints --vpc-endpoint-ids "$endpoint"
   done
 
   # Dissassociate from VPC lattice
-  assoc=$(aws vpc-lattice list-service-network-vpc-associations --vpc-identifier $VPCID | jq ".items[0].arn" -r)
-  echo $assoc
-  aws vpc-lattice delete-service-network-vpc-association --service-network-vpc-association-identifier $assoc
+  assoc=$(aws vpc-lattice list-service-network-vpc-associations --vpc-identifier "$VPCID" | jq ".items[0].arn" -r)
+  echo "$assoc"
+  aws vpc-lattice delete-service-network-vpc-association --service-network-vpc-association-identifier "$assoc"
   sleep 20
 
   # Get the list of security group IDs associated with the VPC
@@ -45,7 +45,7 @@ cleanup_vpc_resources() {
   fi
 }
 
-terraform workspace select $WORKSPACE
+terraform workspace select "$WORKSPACE"
 terraform destroy -target="helm_release.demo_application" -auto-approve
 terraform destroy -target="helm_release.platform_application" -auto-approve
 
@@ -56,17 +56,15 @@ terraform destroy -target="module.eks_blueprints_addons" -auto-approve
 #Remove EKS cluster
 terraform destroy -target="module.eks" -auto-approve
 
-cleanup_vpc_resources $WORKSPACE
+cleanup_vpc_resources "$WORKSPACE"
 
 # # clean everything else
 terraform destroy -auto-approve || true
 
 #Do it 2 tims to be sure to delete everything
-cleanup_vpc_resources $WORKSPACE
+cleanup_vpc_resources "$WORKSPACE"
 
-terraform destroy -auto-approve
-
-if [ $? -eq 0 ]; then
+if terraform destroy -auto-approve; then
   echo "Success: VPC $VPCID deleted successfully."
 else
   echo "Error: Failed to delete VPC $VPCID, you may need to do some manuals cleanups"

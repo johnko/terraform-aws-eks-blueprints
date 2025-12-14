@@ -2,11 +2,11 @@
 
 set -uo pipefail
 
-SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOTDIR="$(
-  cd ${SCRIPTDIR}/../..
-  pwd
-)"
+# SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# ROOTDIR="$(
+#   cd "${SCRIPTDIR}"/../.. || exit 1
+#   pwd
+# )"
 [[ -n ${DEBUG:-} ]] && set -x
 
 if [[ $# -eq 0 ]]; then
@@ -18,7 +18,7 @@ fi
 env=$1
 echo "Destroying $env ..."
 
-terraform workspace select $env
+terraform workspace select "$env"
 terraform destroy -auto-approve -var-file="workspaces/${env}.tfvars" -target="module.gitops_bridge_bootstrap" -auto-approve
 terraform destroy -auto-approve -var-file="workspaces/${env}.tfvars" -target="module.eks_blueprints_addons" -auto-approve
 terraform destroy -auto-approve -var-file="workspaces/${env}.tfvars" -target="module.eks" -auto-approve

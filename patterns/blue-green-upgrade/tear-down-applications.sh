@@ -10,13 +10,14 @@ function delete_argocd_appset_except_pattern() {
   # List all your app to destroy
   # Get the list of ArgoCD applications and store them in an array
   #applicationsets=($(kubectl get applicationset -A -o json | jq -r '.items[] | .metadata.namespace + "/" + .metadata.name'))
+  # shellcheck disable=SC2207
   applicationsets=($(kubectl get applicationset -A -o json | jq -r '.items[] | .metadata.name'))
 
   # Iterate over the applications and delete them
   for app in "${applicationsets[@]}"; do
     if [[ ! $app =~ $1 ]]; then
       echo "Deleting applicationset: $app"
-      kubectl delete ApplicationSet -n argocd $app --cascade=orphan
+      kubectl delete ApplicationSet -n argocd "$app" --cascade=orphan
     else
       echo "Skipping deletion of applicationset: $app (contain '$1')"
     fi
@@ -26,6 +27,7 @@ function delete_argocd_appset_except_pattern() {
   continue_process=true
   while $continue_process; do
     # Get the list of ArgoCD applications and store them in an array
+    # shellcheck disable=SC2207
     applicationsets=($(kubectl get applicationset -A -o json | jq -r '.items[] | .metadata.name'))
 
     still_have_application=false
@@ -46,14 +48,15 @@ function delete_argocd_app_except_pattern() {
   # List all your app to destroy
   # Get the list of ArgoCD applications and store them in an array
   #applications=($(argocd app list -o name))
+  # shellcheck disable=SC2207
   applications=($(kubectl get application -A -o json | jq -r '.items[] | .metadata.name'))
 
   # Iterate over the applications and delete them
   for app in "${applications[@]}"; do
     if [[ ! $app =~ $1 ]]; then
       echo "Deleting application: $app"
-      kubectl -n argocd patch app $app -p '{"metadata": {"finalizers": ["resources-finalizer.argocd.argoproj.io"]}}' --type merge
-      kubectl -n argocd delete app $app
+      kubectl -n argocd patch app "$app" -p '{"metadata": {"finalizers": ["resources-finalizer.argocd.argoproj.io"]}}' --type merge
+      kubectl -n argocd delete app "$app"
     else
       echo "Skipping deletion of application: $app (contain '$1')"
     fi
@@ -64,6 +67,7 @@ function delete_argocd_app_except_pattern() {
   while $continue_process; do
     # Get the list of ArgoCD applications and store them in an array
     #applications=($(argocd app list -o name))
+    # shellcheck disable=SC2207
     applications=($(kubectl get application -A -o json | jq -r '.items[] | .metadata.name'))
 
     still_have_application=false

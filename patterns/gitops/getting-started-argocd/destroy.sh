@@ -3,17 +3,18 @@
 set -uo pipefail
 
 SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOTDIR="$(
-  cd ${SCRIPTDIR}/../..
-  pwd
-)"
+# ROOTDIR="$(
+#   cd "${SCRIPTDIR}"/../.. || exit 1
+#   pwd
+# )"
 [[ -n ${DEBUG:-} ]] && set -x
 
 # Delete the Ingress/SVC before removing the addons
 TMPFILE=$(mktemp)
-terraform -chdir=$SCRIPTDIR output -raw configure_kubectl >"$TMPFILE"
+terraform -chdir="$SCRIPTDIR" output -raw configure_kubectl >"$TMPFILE"
 # check if TMPFILE contains the string "No outputs found"
-if [[ $(cat $TMPFILE) != *"No outputs found"* ]]; then
+if [[ $(cat "$TMPFILE") != *"No outputs found"* ]]; then
+  # shellcheck disable=SC1090
   source "$TMPFILE"
   kubectl delete -n argocd applicationset workloads
   echo "Deleting ingress/svc for game-2048, takes a few minutes for Load Balancer to be deleted"

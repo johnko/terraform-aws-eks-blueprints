@@ -1,11 +1,11 @@
 #!/bin/bash
 set -uo pipefail
 
-SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOTDIR="$(
-  cd ${SCRIPTDIR}/../..
-  pwd
-)"
+# SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# ROOTDIR="$(
+#   cd "${SCRIPTDIR}"/../.. || exit 1
+#   pwd
+# )"
 [[ -n ${DEBUG:-} ]] && set -x
 
 if [[ $# -eq 0 ]]; then
@@ -17,13 +17,13 @@ fi
 env=$1
 echo "Deploying $env" # with "workspaces/${env}.tfvars" ..."
 
-if terraform workspace list | grep -q $env; then
+if terraform workspace list | grep -q "$env"; then
   echo "Workspace $env already exists."
 else
-  terraform workspace new $env
+  terraform workspace new "$env"
 fi
 
-terraform workspace select $env
+terraform workspace select "$env"
 terraform workspace list
 terraform init
 #terraform apply -var-file="workspaces/${env}.tfvars"
