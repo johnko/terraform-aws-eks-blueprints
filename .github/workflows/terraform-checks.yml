@@ -7,15 +7,15 @@ jobs:
     steps:
       - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
         with:
-          terraform_version: 1.13.5 # renovate: datasource=github-releases depName=hashicorp/terraform packageName=hashicorp/terraform
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+          terraform_version: 1.14.1 # renovate: datasource=github-releases depName=hashicorp/terraform packageName=hashicorp/terraform
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           show-progress: false
       - name: Apply terraform fmt and find unformatted files
         run: |
           bash -ex .github/terraform-fmt.sh
           bash -ex .github/terraform-validate.sh
-    timeout-minutes: 10
+    timeout-minutes: 20
 name: terraform-checks
 on:
   pull_request:
