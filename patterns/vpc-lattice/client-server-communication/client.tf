@@ -4,7 +4,7 @@
 
 module "client" {
   source  = "terraform-aws-modules/ec2-instance/aws"
-  version = "6.1.5"
+  version = "6.2.0"
 
   name = "client"
 
