@@ -4,7 +4,7 @@
 
 module "nlb" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "~> 8.6"
+  version = "~> 10.0"
 
   name               = local.name
   vpc_id             = module.vpc.vpc_id
