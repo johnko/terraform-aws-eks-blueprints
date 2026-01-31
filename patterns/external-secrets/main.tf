@@ -268,7 +268,7 @@ YAML
 
 module "cluster_secretstore_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.20"
+  version = "~> 6.0"
 
   role_name_prefix = "${module.eks.cluster_name}-secrets-manager-"
 
@@ -316,7 +316,7 @@ POLICY
 
 module "secretstore_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.20"
+  version = "~> 6.0"
 
   role_name_prefix = "${module.eks.cluster_name}-parameter-store"
 
@@ -361,7 +361,7 @@ resource "aws_iam_policy" "secretstore" {
 
 module "ebs_csi_driver_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.20"
+  version = "~> 6.0"
 
   role_name_prefix = "${module.eks.cluster_name}-ebs-csi-driver-"
 
