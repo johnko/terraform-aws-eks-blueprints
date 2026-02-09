@@ -88,7 +88,7 @@ set +x
 if [[ "PLAN" == "$SAFE_ACTION" ]]; then
   set -x
   set +e
-  $IAC_BIN plan -detailed-exitcode -input=false -parallelism=1
+  $IAC_BIN plan -detailed-exitcode -input=false
   TF_PLAN_EXIT_CODE=$?
   set -e
   exit $TF_PLAN_EXIT_CODE
@@ -102,7 +102,7 @@ if [[ "APPLY" == "$SAFE_ACTION" || "AUTO" == "$SAFE_ACTION" ]]; then
   fi
   set -x
   set +e
-  $IAC_BIN apply $AUTO_APPROVE_ARG -input=false -parallelism=1
+  $IAC_BIN apply $AUTO_APPROVE_ARG -input=false
   TF_APPLY_EXIT_CODE=$?
   set -e
   exit $TF_APPLY_EXIT_CODE
