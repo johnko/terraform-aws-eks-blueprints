@@ -33,7 +33,7 @@ export IAC_BIN=terraform
 
 $IAC_BIN version
 
-for WORKSPACE in $(find . -name '*.tf' -not -path '*/.terraform/*' -not -path '*/docs/*/example/*' -print0 | xargs -0 -I{} dirname {} | sort -u); do
+for WORKSPACE in $(find . -name '*.tf' -mindepth 4 -not -path '*/.terraform/*' -not -path '*/docs/*/example/*' -print0 | xargs -0 -I{} dirname {} | sort -u); do
   bash -e .github/tf.sh "$WORKSPACE" validate
   if [[ "true" == "$CI" ]]; then
     # Git will refuse to modify untracked nested git repositories (directories with a .git subdirectory) unless a second -f is given.
