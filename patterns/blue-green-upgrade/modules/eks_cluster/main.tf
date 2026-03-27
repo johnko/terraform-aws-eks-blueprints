@@ -663,7 +663,7 @@ module "eks_blueprints_addons" {
 
 module "ebs_csi_driver_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.20"
+  version = "~> 6.0"
 
   role_name_prefix = "${module.eks.cluster_name}-ebs-csi-"
 
@@ -681,7 +681,7 @@ module "ebs_csi_driver_irsa" {
 
 module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.20"
+  version = "~> 6.0"
 
   role_name_prefix = "${module.eks.cluster_name}-vpc-cni-"
 
