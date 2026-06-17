@@ -8,7 +8,7 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = ">= 2.9, < 3.0"
+      version = "< 3.3"
     }
     kubectl = {
       source  = "alekc/kubectl"
@@ -81,7 +81,7 @@ locals {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "21.20.0"
+  version = "21.23.0"
 
   name               = local.name
   kubernetes_version = local.cluster_version
