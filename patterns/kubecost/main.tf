@@ -354,7 +354,7 @@ data "aws_iam_policy_document" "athena" {
 
 module "eks_blueprints_addon" {
   source  = "aws-ia/eks-blueprints-addon/aws"
-  version = "~> 1.1.1" #ensure to update this to the latest/desired version
+  version = "~> 1.3.0" #ensure to update this to the latest/desired version
 
   chart            = "cost-analyzer"
   chart_version    = "1.108.1"
