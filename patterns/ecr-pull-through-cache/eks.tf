@@ -83,7 +83,7 @@ resource "aws_iam_policy" "ecrpullthroughcache" {
 
 module "ebs_csi_driver_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.30"
+  version = "~> 6.0"
 
   role_name = "${local.name}-ebs-csi-driver"
 
