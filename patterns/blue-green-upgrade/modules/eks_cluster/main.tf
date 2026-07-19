@@ -556,7 +556,7 @@ resource "kubernetes_secret" "git_secrets" {
 # GitOps Bridge: Bootstrap
 ################################################################################
 module "gitops_bridge_bootstrap" {
-  source = "github.com/gitops-bridge-dev/terraform-helm-gitops-bridge?ref=v0.0.2"
+  source = "github.com/johnko/terraform-helm-gitops-bridge?ref=main"
 
   cluster = {
     cluster_name = module.eks.cluster_name
