@@ -15,11 +15,11 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     host                   = module.eks.cluster_endpoint
     cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
 
-    exec {
+    exec = {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
       # This requires the awscli to be installed locally where Terraform is executed
@@ -62,7 +62,7 @@ locals {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "21.20.0"
+  version = "21.23.0"
 
   name                   = local.name
   kubernetes_version     = "1.33"
@@ -380,7 +380,7 @@ module "velero_backup_s3_bucket" {
 
 module "efs" {
   source  = "terraform-aws-modules/efs/aws"
-  version = "~> 1.1"
+  version = "~> 2.0"
 
   creation_token = local.name
   name           = local.name

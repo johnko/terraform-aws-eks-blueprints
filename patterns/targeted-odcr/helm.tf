@@ -6,7 +6,7 @@ resource "helm_release" "nvidia_device_plugin" {
   name             = "nvidia-device-plugin"
   repository       = "https://nvidia.github.io/k8s-device-plugin"
   chart            = "nvidia-device-plugin"
-  version          = "0.19.1"
+  version          = "0.19.2"
   namespace        = "nvidia-device-plugin"
   create_namespace = true
   wait             = false
@@ -16,7 +16,7 @@ resource "helm_release" "aws_efa_device_plugin" {
   name       = "aws-efa-k8s-device-plugin"
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-efa-k8s-device-plugin"
-  version    = "v0.5.26"
+  version    = "v0.5.29"
   namespace  = "kube-system"
   wait       = false
 
