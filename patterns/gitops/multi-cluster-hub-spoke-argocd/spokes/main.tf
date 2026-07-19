@@ -162,7 +162,7 @@ locals {
 # GitOps Bridge: Bootstrap for Hub Cluster
 ################################################################################
 module "gitops_bridge_bootstrap_hub" {
-  source = "github.com/gitops-bridge-dev/gitops-bridge-argocd-bootstrap-terraform?ref=v2.0.0"
+  source = "github.com/johnko/terraform-helm-gitops-bridge?ref=main"
 
   # The ArgoCD remote cluster secret is deploy on hub cluster not on spoke clusters
   providers = {
