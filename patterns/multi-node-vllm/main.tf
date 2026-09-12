@@ -8,7 +8,7 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "< 3.3"
+      version = "< 3.4"
     }
     http = {
       source  = "hashicorp/http"
