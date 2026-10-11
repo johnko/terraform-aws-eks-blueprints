@@ -105,7 +105,7 @@ module "eks_blueprints_addons" {
 
 module "ebs_csi_driver_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.20"
+  version = "~> 6.0"
 
   role_name = "${local.name}-ebs-csi-driver"
 
@@ -246,7 +246,7 @@ resource "aws_s3_bucket_acl" "athena_results" {
 
 module "kubecost_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.30"
+  version = "~> 6.0"
 
   role_name_prefix           = "${local.name}-"
   assume_role_condition_test = "StringLike"
