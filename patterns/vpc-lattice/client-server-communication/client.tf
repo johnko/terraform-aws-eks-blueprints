@@ -43,7 +43,7 @@ module "vpc_endpoints" {
 
 module "client_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   name        = "client"
   description = "Security Group for EC2 Instance Egress"
@@ -64,7 +64,7 @@ module "client_sg" {
 
 module "endpoint_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   name        = "ssm-endpoint"
   description = "Security Group for EC2 Instance Egress"

@@ -94,7 +94,7 @@ resource "aws_iam_policy" "eks_full_access_policy" {
 
 module "client_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   name        = local.client_name
   description = "Security group for SSM access to private cluster"
