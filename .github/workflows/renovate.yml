@@ -4,7 +4,7 @@ concurrency:
 jobs:
   call-workflow:
     secrets: inherit
-    uses: johnko/renovate-config/.github/workflows/renovate-shared.yml@3e04ab85454d8e98941721e0f70b05f5ccef0d38 # main
+    uses: johnko/renovate-config/.github/workflows/renovate-shared.yml@ac4eb96470b50d261b7690fa33320df54fbb72ac # main
     with:
       logLevel: ${{ inputs.logLevel }}
       overrideSchedule: ${{ inputs.overrideSchedule == 'true' && 'true' || '' }}
